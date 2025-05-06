@@ -41,7 +41,7 @@ export const Navbar = () => {
           className="text-2xl font-bold hover:text-gray-600 transition-colors"
           onClick={() => setIsOpen(false)}
         >
-          PI
+          InfoBus
         </Link>
         
         {/* Desktop Menu */}
