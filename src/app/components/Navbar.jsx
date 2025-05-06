@@ -2,19 +2,29 @@
 import Link from "next/link";
 import { useState } from "react";
 
+import {
+  Home,
+  User,
+  Bookmark,
+  MessageCircle,
+  AlertCircle,
+  Settings,
+  MapPin,
+} from "lucide-react";
+
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
   const menuLinks = [
-    { href: "/", label: "Home" },
-    { href: "/about", label: "Conta" },
-    { href: "/saved", label: "Salvos" },
-    { href: "/comments", label: "Comentários" },
-    { href: "/complaints", label: "Reclamação" },
-    { href: "/settings", label: "Configurações" },
-    { href: "/map", label: "Mapa" },
+    { href: "/", label: "Home", icon: Home },
+    { href: "/about", label: "Conta", icon: User },
+    { href: "/saved", label: "Salvos", icon: Bookmark },
+    { href: "/comments", label: "Comentários", icon: MessageCircle },
+    { href: "/complaints", label: "Reclamação", icon: AlertCircle },
+    { href: "/settings", label: "Configurações", icon: Settings },
+    { href: "/map", label: "Mapa", icon: MapPin },
   ];
 
   const mobileMenuClasses = [
@@ -28,7 +38,11 @@ export const Navbar = () => {
     "p-4",
     "gap-4",
     "flex-col",
-    isOpen ? "flex" : "hidden",
+    "transition-all",
+    "duration-300",
+    "origin-top",
+    "overflow-hidden",
+    isOpen ? "opacity-100 scale-y-100 max-h-[500px] flex" : "opacity-0 scale-y-0 max-h-0 pointer-events-none",
   ].join(" ");
 
   const desktopMenuClasses = "hidden md:flex gap-6";
@@ -94,12 +108,14 @@ export const Navbar = () => {
           <Link
             key={link.href}
             href={link.href}
-            className="hover:text-gray-600 transition-colors py-2"
+            className="hover:text-gray-600 transition-colors py-2 flex items-center gap-2"
             onClick={() => setIsOpen(false)}
           >
+            <link.icon className="w-5 h-5" />
             {link.label}
           </Link>
         ))}
+
       </div>
     </nav>
   );
