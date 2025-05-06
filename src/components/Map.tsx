@@ -1,15 +1,19 @@
 "use client";
 
+import { Search } from "lucide-react";
+
 export const Map = () => {
   return (
     <div className="relative h-screen w-full">
-      {/* Input de busca sobreposto ao mapa */}
-      <div className="bg-gray-300 rounded-md absolute top-4 left-1/2 transform -translate-x-1/2 z-10 w-11/12 max-w-md border border-black">
-        <input
-          type="text"
-          placeholder="Buscar localização..."
-          className="w-full p-3 rounded-md shadow-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-black"
-        />
+      <div className="flex bg-gray-300 rounded-md absolute top-4 left-1/2 transform -translate-x-1/2 z-10 w-11/12 max-w-md border border-black">
+        <div className="relative w-full">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+          <input
+            type="text"
+            placeholder="Buscar localização..."
+            className="w-full pl-10 p-3 rounded-md shadow-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-black"
+          />
+        </div>
       </div>
 
       {/* Mapa em iframe */}
@@ -25,5 +29,6 @@ export const Map = () => {
         className="absolute top-0 left-0 w-full h-full"
       />
     </div>
+
   );
 };

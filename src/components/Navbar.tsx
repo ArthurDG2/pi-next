@@ -19,12 +19,11 @@ export const Navbar = () => {
 
   const menuLinks = [
     { href: "/", label: "Home", icon: Home },
-    { href: "/about", label: "Conta", icon: User },
-    { href: "/saved", label: "Salvos", icon: Bookmark },
-    { href: "/comments", label: "Comentários", icon: MessageCircle },
-    { href: "/complaints", label: "Reclamação", icon: AlertCircle },
-    { href: "/settings", label: "Configurações", icon: Settings },
     { href: "/map", label: "Mapa", icon: MapPin },
+    { href: "/saved", label: "Salvos", icon: Bookmark },
+    { href: "/complaints", label: "Reclamação", icon: AlertCircle },
+    { href: "/comments", label: "Comentários", icon: MessageCircle },
+    { href: "/conta", label: "Minha Conta", icon: User },
   ];
 
   const mobileMenuClasses = [
