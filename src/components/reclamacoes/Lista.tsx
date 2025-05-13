@@ -3,6 +3,12 @@ import ReclamacaoItem from "./ReclamacaoItem"
 
 interface ListaReclamacoesProps {
   tipo: string
+  filtros: {
+    status: string
+    periodo: string
+    linha: string
+    ordenacao: string
+  }
 }
 
 // Dados de exemplo
@@ -18,6 +24,7 @@ const reclamacoesMock = [
       "Hoje às 7:30 da manhã, o ônibus da linha 305 passou direto pelo ponto onde eu estava esperando, mesmo com sinal feito. Havia outras 3 pessoas no ponto também sinalizando.",
     respostas: [],
     privacidade: "privada",
+    dataAtualizacao: "13/05/2025",
   },
   {
     id: 2,
@@ -37,6 +44,7 @@ const reclamacoesMock = [
       },
     ],
     privacidade: "privada",
+    dataAtualizacao: "11/05/2025",
   },
   {
     id: 3,
@@ -67,6 +75,7 @@ const reclamacoesMock = [
       },
     ],
     privacidade: "publica",
+    dataAtualizacao: "09/05/2025",
   },
   {
     id: 4,
@@ -92,6 +101,7 @@ const reclamacoesMock = [
       },
     ],
     privacidade: "publica",
+    dataAtualizacao: "03/05/2025",
   },
   {
     id: 5,
@@ -111,14 +121,78 @@ const reclamacoesMock = [
       },
     ],
     privacidade: "privada",
+    dataAtualizacao: "29/04/2025",
   },
 ]
 
-export default function ListaReclamacoes({ tipo }: ListaReclamacoesProps) {
-  // Filtramos as reclamações com base no tipo (minhas ou públicas)
-  const reclamacoes = tipo === "publicas" ? reclamacoesMock.filter((r) => r.privacidade === "publica") : reclamacoesMock
+export default function ListaReclamacoes({ tipo, filtros }: ListaReclamacoesProps) {
+  // Aplicar filtros às reclamações
+  let reclamacoesFiltradas = reclamacoesMock.filter((reclamacao) => {
+    // Filtro por tipo (minhas ou públicas)
+    if (tipo === "publicas" && reclamacao.privacidade !== "publica") {
+      return false
+    }
 
-  if (reclamacoes.length === 0) {
+    // Filtro por status
+    if (filtros.status && reclamacao.status !== filtros.status) {
+      return false
+    }
+
+    // Filtro por linha
+    if (filtros.linha && !reclamacao.linha.toLowerCase().includes(filtros.linha.toLowerCase())) {
+      return false
+    }
+
+    // Filtro por período
+    if (filtros.periodo) {
+      const hoje = new Date()
+      const dataReclamacao = new Date(reclamacao.data.split("/").reverse().join("-"))
+
+      const diasDiferenca = Math.floor((hoje.getTime() - dataReclamacao.getTime()) / (1000 * 60 * 60 * 24))
+
+      switch (filtros.periodo) {
+        case "7dias":
+          if (diasDiferenca > 7) return false
+          break
+        case "30dias":
+          if (diasDiferenca > 30) return false
+          break
+        case "90dias":
+          if (diasDiferenca > 90) return false
+          break
+        case "12meses":
+          if (diasDiferenca > 365) return false
+          break
+      }
+    }
+
+    return true
+  })
+
+  // Aplicar ordenação
+  reclamacoesFiltradas = reclamacoesFiltradas.sort((a, b) => {
+    switch (filtros.ordenacao) {
+      case "recentes":
+        return (
+          new Date(b.data.split("/").reverse().join("-")).getTime() -
+          new Date(a.data.split("/").reverse().join("-")).getTime()
+        )
+      case "antigas":
+        return (
+          new Date(a.data.split("/").reverse().join("-")).getTime() -
+          new Date(b.data.split("/").reverse().join("-")).getTime()
+        )
+      case "atualizadas":
+        return (
+          new Date(b.dataAtualizacao.split("/").reverse().join("-")).getTime() -
+          new Date(a.dataAtualizacao.split("/").reverse().join("-")).getTime()
+        )
+      default:
+        return 0
+    }
+  })
+
+  if (reclamacoesFiltradas.length === 0) {
     return (
       <div className="text-center py-8">
         <svg
@@ -140,8 +214,8 @@ export default function ListaReclamacoes({ tipo }: ListaReclamacoesProps) {
         <h3 className="text-lg font-medium text-gray-900 mb-1">Nenhuma reclamação encontrada</h3>
         <p className="text-gray-500">
           {tipo === "publicas"
-            ? "Não há reclamações públicas disponíveis no momento."
-            : "Você ainda não registrou nenhuma reclamação ou comentário."}
+            ? "Não há reclamações públicas disponíveis com os filtros selecionados."
+            : "Não há reclamações que correspondam aos filtros selecionados."}
         </p>
       </div>
     )
@@ -149,7 +223,7 @@ export default function ListaReclamacoes({ tipo }: ListaReclamacoesProps) {
 
   return (
     <div className="space-y-4">
-      {reclamacoes.map((reclamacao) => (
+      {reclamacoesFiltradas.map((reclamacao) => (
         <ReclamacaoItem key={reclamacao.id} reclamacao={reclamacao} />
       ))}
     </div>

@@ -8,6 +8,12 @@ import { Navbar } from "@/components/Navbar"
 
 export default function ReclamacoesComentariosPage() {
   const [activeTab, setActiveTab] = useState("minhas")
+  const [filtros, setFiltros] = useState({
+    status: "",
+    periodo: "",
+    linha: "",
+    ordenacao: "recentes",
+  })
 
   const tabs = [
     { id: "minhas", label: "Minhas Reclamações" },
@@ -15,10 +21,15 @@ export default function ReclamacoesComentariosPage() {
     { id: "nova", label: "Reportar Problema" },
   ]
 
+  // Função para atualizar os filtros
+  const handleFiltroChange = (novosFiltros: any) => {
+    setFiltros((prev) => ({ ...prev, ...novosFiltros }))
+  }
+
   return (
-    <main className="w-full">
-        <Navbar />
-        <div className="bg-white rounded-lg shadow overflow-hidden">
+    <main className="container">
+      <Navbar />
+      <div className="bg-white rounded-lg shadow overflow-hidden">
         <div className="border-b border-gray-200">
           <nav className="flex">
             {tabs.map((tab) => (
@@ -38,12 +49,12 @@ export default function ReclamacoesComentariosPage() {
         </div>
 
         <div className="p-6">
-        {activeTab === "nova" ? (
+          {activeTab === "nova" ? (
             <NovaReclamacaoForm onClose={() => setActiveTab("minhas")} />
           ) : (
             <>
-              <FiltrosReclamacoes />
-              <ListaReclamacoes tipo={activeTab} />
+              <FiltrosReclamacoes filtros={filtros} onFiltroChange={handleFiltroChange} />
+              <ListaReclamacoes tipo={activeTab} filtros={filtros} />
             </>
           )}
         </div>

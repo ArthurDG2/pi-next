@@ -21,8 +21,7 @@ export const Navbar = () => {
     { href: "/", label: "Home", icon: Home },
     { href: "/map", label: "Mapa", icon: MapPin },
     { href: "/saved", label: "Salvos", icon: Bookmark },
-    { href: "/reclamacoes", label: "Reclamação", icon: AlertCircle },
-    { href: "/comments", label: "Comentários", icon: MessageCircle },
+    { href: "/reclamacoes", label: "Reclamações & Comentários", icon: AlertCircle },
     { href: "/conta", label: "Minha Conta", icon: User },
   ];
 

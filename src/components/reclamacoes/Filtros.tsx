@@ -2,19 +2,20 @@
 
 import type React from "react"
 
-import { useState } from "react"
+interface FiltrosProps {
+  filtros: {
+    status: string
+    periodo: string
+    linha: string
+    ordenacao: string
+  }
+  onFiltroChange: (filtros: Partial<FiltrosProps["filtros"]>) => void
+}
 
-export default function FiltrosReclamacoes() {
-  const [filtros, setFiltros] = useState({
-    status: "",
-    periodo: "",
-    linha: "",
-    ordenacao: "recentes",
-  })
-
-  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+export default function FiltrosReclamacoes({ filtros, onFiltroChange }: FiltrosProps) {
+  const handleChange = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
     const { name, value } = e.target
-    setFiltros((prev) => ({ ...prev, [name]: value }))
+    onFiltroChange({ [name]: value })
   }
 
   return (
@@ -50,7 +51,7 @@ export default function FiltrosReclamacoes() {
               id="linha"
               name="linha"
               value={filtros.linha}
-              onChange={(e) => setFiltros((prev) => ({ ...prev, linha: e.target.value }))}
+              onChange={handleChange}
               placeholder="Ex: 305"
               className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
             />

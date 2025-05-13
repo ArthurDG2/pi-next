@@ -5,7 +5,7 @@ import { Search } from "lucide-react";
 export const Map = () => {
   return (
     <div className="relative h-screen w-full">
-      <div className="flex bg-gray-300 rounded-md absolute top-4 left-1/2 transform -translate-x-1/2 z-10 w-11/12 max-w-md border border-black">
+      <div className="flex bg-white rounded-md absolute top-4 left-1/2 transform -translate-x-1/2 z-10 w-11/12 max-w-md border border-black">
         <div className="relative w-full">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
           <input
