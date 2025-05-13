@@ -18,7 +18,7 @@ export default function MinhaContaPage() {
   ]
 
   return (
-    <main className="container">
+    <main className="w-full">
       <Navbar />
 
       <div className="flex flex-col md:flex-row gap-8 py-10 mx-10">

@@ -16,7 +16,7 @@ export default function ReclamacoesComentariosPage() {
   ]
 
   return (
-    <main className="container">
+    <main className="w-full">
         <Navbar />
         <div className="bg-white rounded-lg shadow overflow-hidden">
         <div className="border-b border-gray-200">
