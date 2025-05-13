@@ -47,7 +47,7 @@ export const Navbar = () => {
   const desktopMenuClasses = "hidden md:flex gap-6";
 
   return (
-    <nav className="bg-gray-300 text-black p-4 sm:p-6 sticky top-0 z-50">
+    <nav className="bg-white text-black p-4 sm:p-6 sticky top-0 z-50">
       <div className="container mx-auto flex justify-between items-center">
         <Link 
           href="/" 

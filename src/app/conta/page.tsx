@@ -1,86 +1,55 @@
-'use client'
+"use client"
 
-import { useState } from 'react';
-import { Navbar } from "@/components/Navbar";
-import { EditableField } from '@/components/EditableField';
-import Image from "next/image";
+import { useState } from "react"
+import ProfileSection from "@/components/conta/ProfileSection"
+import SecuritySection from "@/components/conta/SecuritySection"
+import PreferencesSection from "@/components/conta/PreferencesSection"
+import DataSection from "@/components/conta/DataSection"
+import { Navbar } from "@/components/Navbar"
 
-export default function AcountPage() {
-    const [isEditing, setIsEditing] = useState(false);
-    const [user, setUser] = useState({
-        name: "João Silva",
-        email: "usuario@exemplo.com",
-        phone: "(11) 98765-4321",
-      });
+export default function MinhaContaPage() {
+  const [activeTab, setActiveTab] = useState("perfil")
 
-    const handleSave = () => {
-        setIsEditing(false);
-        //lógica para enviar os dados atualizados para o backend
-      };
+  const tabs = [
+    { id: "perfil", label: "Perfil" },
+    { id: "seguranca", label: "Segurança" },
+    { id: "preferencias", label: "Preferências" },
+    { id: "dados", label: "Dados" },
+  ]
 
-    return (
-        <div>
-            <Navbar />
-            <div>
-                <div>
-                    <Image
-                        className="rounded-full aspect-square"
-                        src="/perfil.jpg"
-                        alt="Imagem de perfil"
-                        width={100}
-                        height={100}
-                    />
-                    <h1>Gustavo Silva</h1>
-                    <h2>gustacar2009@gmail.com</h2>
-                </div>
+  return (
+    <main className="container">
+      <Navbar />
 
-                <div>
-      <h3>Dados da Conta</h3>
-      <div className="max-w-62">
-        <EditableField
-          label="Nome"
-          value={user.name}
-          isEditing={isEditing}
-          onChange={(value) => setUser({ ...user, name: value })}
-        />
-        <EditableField
-          label="E-mail"
-          value={user.email}
-          isEditing={isEditing}
-          onChange={(value) => setUser({ ...user, email: value })}
-        />
-        <EditableField
-          label="Telefone"
-          value={user.phone}
-          isEditing={isEditing}
-          onChange={(value) => setUser({ ...user, phone: value })}
-        />
+      <div className="flex flex-col md:flex-row gap-8 py-10 mx-10">
+        {/* Sidebar / Tabs */}
+        <div className="w-full md:w-64 shrink-0">
+          <div className="bg-white rounded-lg shadow overflow-hidden">
+            <ul className="divide-y divide-gray-200">
+              {tabs.map((tab) => (
+                <li key={tab.id}>
+                  <button
+                    onClick={() => setActiveTab(tab.id)}
+                    className={`w-full text-left px-4 py-3 transition-colors ${
+                      activeTab === tab.id ? "bg-gray-100 font-medium" : "hover:bg-gray-50"
+                    }`}
+                  >
+                    {tab.label}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        {/* Content */}
+        <div className="flex-1 bg-white rounded-lg shadow p-6">
+          {activeTab === "perfil" && <ProfileSection />}
+          {activeTab === "seguranca" && <SecuritySection />}
+          {activeTab === "preferencias" && <PreferencesSection />}
+          {activeTab === "dados" && <DataSection />}
+        </div>
       </div>
-      {isEditing ? (
-        <div className="flex gap-2">
-          <button 
-            onClick={handleSave}
-            className="px-4 py-2 border border-black text-black rounded-md"
-          >
-            Salvar
-          </button>
-          <button 
-            onClick={() => setIsEditing(false)}
-            className="px-4 py-2 bg-gray-200 rounded-md"
-          >
-            Cancelar
-          </button>
-        </div>
-      ) : (
-        <button 
-          onClick={() => setIsEditing(true)}
-          className="px-4 py-2 border border-black text-black rounded-md"
-        >
-          Editar dados
-        </button>
-      )}
-    </div>
-            </div>
-        </div>
-    )
+    </main>
+  )
 }
