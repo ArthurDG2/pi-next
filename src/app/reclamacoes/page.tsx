@@ -1,0 +1,53 @@
+"use client"
+
+import { useState } from "react"
+import NovaReclamacaoForm from "@/components/reclamacoes/Novas"
+import ListaReclamacoes from "@/components/reclamacoes/Lista"
+import FiltrosReclamacoes from "@/components/reclamacoes/Filtros"
+import { Navbar } from "@/components/Navbar"
+
+export default function ReclamacoesComentariosPage() {
+  const [activeTab, setActiveTab] = useState("minhas")
+
+  const tabs = [
+    { id: "minhas", label: "Minhas Reclamações" },
+    { id: "publicas", label: "Reclamações Públicas" },
+    { id: "nova", label: "Reportar Problema" },
+  ]
+
+  return (
+    <main className="container">
+        <Navbar />
+        <div className="bg-white rounded-lg shadow overflow-hidden">
+        <div className="border-b border-gray-200">
+          <nav className="flex">
+            {tabs.map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`py-4 px-6 text-center font-medium text-sm ${
+                  activeTab === tab.id
+                    ? "border-b-2 border-blue-500 text-blue-600"
+                    : "text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                }`}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </nav>
+        </div>
+
+        <div className="p-6">
+        {activeTab === "nova" ? (
+            <NovaReclamacaoForm onClose={() => setActiveTab("minhas")} />
+          ) : (
+            <>
+              <FiltrosReclamacoes />
+              <ListaReclamacoes tipo={activeTab} />
+            </>
+          )}
+        </div>
+      </div>
+    </main>
+  )
+}
