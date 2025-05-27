@@ -6,10 +6,7 @@ import {
   Home,
   User,
   Bookmark,
-  MessageCircle,
   AlertCircle,
-  Settings,
-  MapPin,
 } from "lucide-react";
 
 export const Navbar = () => {
@@ -19,7 +16,6 @@ export const Navbar = () => {
 
   const menuLinks = [
     { href: "/", label: "Home", icon: Home },
-    { href: "/map", label: "Mapa", icon: MapPin },
     { href: "/saved", label: "Salvos", icon: Bookmark },
     { href: "/reclamacoes", label: "Reclamações & Comentários", icon: AlertCircle },
     { href: "/conta", label: "Minha Conta", icon: User },
@@ -48,18 +44,18 @@ export const Navbar = () => {
   return (
     <nav className="bg-white text-black p-4 sm:p-6 sticky top-0 z-50">
       <div className="container mx-auto flex justify-between items-center">
-        <Link 
-          href="/" 
+        <Link
+          href="/"
           className="text-2xl font-bold hover:text-gray-600 transition-colors"
           onClick={() => setIsOpen(false)}
         >
           InfoBus
         </Link>
-        
+
         {/* Desktop Menu */}
         <div className={desktopMenuClasses}>
           {menuLinks.map((link) => (
-            <Link 
+            <Link
               key={link.href}
               href={link.href}
               className="hover:text-gray-600 transition-colors"
@@ -68,9 +64,9 @@ export const Navbar = () => {
             </Link>
           ))}
         </div>
-        
+
         {/* Mobile Menu Button */}
-        <button 
+        <button
           onClick={toggleMenu}
           className="md:hidden p-2 rounded-md hover:bg-gray-400 transition-colors"
           aria-label={isOpen ? "Fechar menu" : "Abrir menu"}
