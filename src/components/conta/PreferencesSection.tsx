@@ -2,7 +2,11 @@
 
 import { useState } from "react"
 
+import { useTheme } from "@/hooks/useTheme";
+
+
 export default function PreferencesSection() {
+  const { theme, changeTheme } = useTheme();
   const [preferences, setPreferences] = useState({
     theme: "light",
     notifications: {
@@ -11,13 +15,6 @@ export default function PreferencesSection() {
       sms: false,
     },
   })
-
-  const handleThemeChange = (theme: string) => {
-    setPreferences({
-      ...preferences,
-      theme,
-    })
-  }
 
   const handleNotificationChange = (type: string) => {
     setPreferences({
@@ -30,7 +27,7 @@ export default function PreferencesSection() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 bg-theme">
       <h2 className="text-xl font-semibold border-b pb-2">Preferências</h2>
 
       <div className="space-y-8">
@@ -38,12 +35,11 @@ export default function PreferencesSection() {
           <h3 className="text-lg font-medium">Tema</h3>
           <div className="flex gap-4">
             <button
-              onClick={() => handleThemeChange("light")}
-              className={`flex flex-col items-center p-4 border rounded-lg transition-colors ${
-                preferences.theme === "light" ? "border-blue-500 bg-blue-50" : "border-gray-200 hover:bg-gray-50"
-              }`}
+              onClick={() => changeTheme("light")}
+              className={`flex flex-col items-center p-4 border rounded-lg transition-colors ${theme === "light" ? "border-blue-500 bg-blue-50" : "border-gray-200 hover:bg-gray-400"
+                }`}
             >
-              <div className="w-16 h-16 bg-white border border-gray-200 rounded-lg mb-2 flex items-center justify-center">
+              <div className="w-16 h-16 bg-theme border border-gray-200 rounded-lg mb-2 flex items-center justify-center">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="24"
@@ -70,10 +66,9 @@ export default function PreferencesSection() {
             </button>
 
             <button
-              onClick={() => handleThemeChange("dark")}
-              className={`flex flex-col items-center p-4 border rounded-lg transition-colors ${
-                preferences.theme === "dark" ? "border-blue-500 bg-blue-50" : "border-gray-200 hover:bg-gray-50"
-              }`}
+              onClick={() => changeTheme("dark")}
+              className={`flex flex-col items-center p-4 border rounded-lg transition-colors ${theme === "dark" ? "border-blue-500 bg-gray-800" : "border-gray-200 hover:bg-gray-400"
+                }`}
             >
               <div className="w-16 h-16 bg-gray-800 border border-gray-700 rounded-lg mb-2 flex items-center justify-center">
                 <svg

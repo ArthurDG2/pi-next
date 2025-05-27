@@ -40,7 +40,7 @@ const rota = {
 
 export const Map = () => {
   return (
-    <div className="flex flex-col md:flex-row gap-4 w-[90%] mx-auto justify-center">
+    <div className="bg-theme flex flex-col md:flex-row gap-4 w-[90%] mx-auto justify-center">
       <div className="relative h-[500px] w-full md:w-2/3">
         <div className="flex bg-white rounded-md absolute top-4 left-1/2 transform -translate-x-1/2 z-10 w-11/12 max-w-md border border-black">
           <div className="relative w-full">
@@ -68,7 +68,7 @@ export const Map = () => {
       </div>
 
       {/* Painel de Detalhes da Rota */}
-      <div className="w-full md:w-1/3 bg-white rounded-lg shadow p-6 border border-gray-200 flex flex-col gap-4 min-w-[300px] max-w-md">
+      <div className="w-full md:w-1/3 bg-theme rounded-lg shadow p-6 border border-gray-200 flex flex-col gap-4 min-w-[300px] max-w-md">
         <div className="flex items-center justify-between mb-2">
           <h2 className="text-xl font-bold">Detalhes da Rota</h2>
           <span className="bg-gray-100 border border-gray-300 rounded-full px-3 py-1 text-xs font-medium text-gray-700">
@@ -78,27 +78,27 @@ export const Map = () => {
         <div className="flex flex-col gap-1 text-gray-700 text-sm mb-2">
           <div className="flex items-center gap-2">
             <MapPin size={16} className="text-blue-500" />
-            <span>{rota.origem}</span>
-            <span className="mx-1 text-gray-400">→</span>
-            <span className="font-semibold">{rota.destino}</span>
+            <span className="text-theme">{rota.origem}</span>
+            <span className="mx-1 text-theme">→</span>
+            <span className="font-semibold text-theme">{rota.destino}</span>
           </div>
           <div className="flex items-center gap-2">
             <Clock size={16} className="text-blue-500" />
-            <span>Chegada estimada: <span className="font-semibold">{rota.chegada}</span></span>
+            <span className="text-theme">Chegada estimada: <span className="font-semibold text-theme">{rota.chegada}</span></span>
           </div>
         </div>
         <div>
           <div className="flex items-center gap-2 mb-2">
-            <span className="font-semibold text-gray-800">Ver instruções passo a passo</span>
-            <span className="ml-auto text-gray-400">▼</span>
+            <span className="font-semibold text-theme">Ver instruções passo a passo</span>
+            <span className="ml-auto text-theme">▼</span>
           </div>
           <div className="flex flex-col gap-2">
             {rota.instrucoes.map((inst, idx) => (
-              <div key={idx} className="flex items-start gap-3 bg-gray-50 rounded p-2 border border-gray-100">
+              <div key={idx} className="flex items-start gap-3 bg-theme rounded p-2 border border-gray-100">
                 <Navigation size={18} className="text-blue-500 mt-1" />
                 <div className="flex-1">
-                  <span className="text-gray-800 text-sm font-medium">{inst.texto}</span>
-                  <div className="flex gap-4 mt-1 text-xs text-gray-500">
+                  <span className="text-theme text-sm font-medium">{inst.texto}</span>
+                  <div className="flex gap-4 mt-1 text-xs text-theme">
                     <span>{inst.distancia}</span>
                     <span>•</span>
                     <span>{inst.tempo}</span>

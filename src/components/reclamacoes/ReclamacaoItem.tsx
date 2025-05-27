@@ -63,15 +63,15 @@ export default function ReclamacaoItem({ reclamacao }: ReclamacaoItemProps) {
   }
 
   return (
-    <div className="border rounded-lg overflow-hidden">
+    <div className="border-theme border rounded-lg overflow-hidden">
       <div
-        className="p-4 bg-white cursor-pointer hover:bg-gray-50 transition-colors"
+        className="p-4 bg-card cursor-pointer hover-theme transition-colors"
         onClick={() => setExpandida(!expandida)}
       >
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
           <div>
-            <h3 className="text-lg font-medium text-gray-900">{reclamacao.titulo}</h3>
-            <div className="flex flex-wrap items-center gap-2 mt-1 text-sm text-gray-500">
+            <h3 className="text-lg font-medium text-theme">{reclamacao.titulo}</h3>
+            <div className="flex flex-wrap items-center gap-2 mt-1 text-sm text-muted">
               <span>#{reclamacao.id}</span>
               <span>•</span>
               <span>{reclamacao.categoria}</span>
@@ -104,7 +104,7 @@ export default function ReclamacaoItem({ reclamacao }: ReclamacaoItemProps) {
               )}
             </div>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
             {getStatusBadge(reclamacao.status)}
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -125,46 +125,46 @@ export default function ReclamacaoItem({ reclamacao }: ReclamacaoItemProps) {
       </div>
 
       {expandida && (
-        <div className="border-t p-4 bg-gray-50">
+        <div className="border-t border-theme p-4 bg-card">
           <div className="mb-4">
-            <h4 className="text-sm font-medium text-gray-700 mb-2">Descrição</h4>
-            <p className="text-gray-800 whitespace-pre-line">{reclamacao.descricao}</p>
+            <h4 className="text-sm font-medium text-theme mb-2">Descrição</h4>
+            <p className="text-theme whitespace-pre-line">{reclamacao.descricao}</p>
           </div>
 
           {reclamacao.respostas.length > 0 && (
             <div className="mb-4">
-              <h4 className="text-sm font-medium text-gray-700 mb-2">Respostas</h4>
+              <h4 className="text-sm font-medium text-theme mb-2">Respostas</h4>
               <div className="space-y-3">
                 {reclamacao.respostas.map((resposta, index) => (
-                  <div key={index} className="bg-white p-3 rounded border">
+                  <div key={index} className="bg-theme p-3 rounded border border-theme">
                     <div className="flex justify-between items-start mb-2">
-                      <span className={`font-medium ${resposta.autor === "Você" ? "text-blue-600" : "text-gray-900"}`}>
+                      <span className={`font-medium ${resposta.autor === "Você" ? "text-primary" : "text-theme"}`}>
                         {resposta.autor}
                       </span>
-                      <span className="text-xs text-gray-500">{resposta.data}</span>
+                      <span className="text-xs text-muted">{resposta.data}</span>
                     </div>
-                    <p className="text-gray-800">{resposta.mensagem}</p>
+                    <p className="text-theme">{resposta.mensagem}</p>
                   </div>
                 ))}
               </div>
             </div>
           )}
 
-          <div className="flex flex-wrap gap-2">
+          <div className="flex gap-2">
             {!mostrarFormResposta && reclamacao.status !== "fechada" && (
               <button
                 onClick={(e) => {
                   e.stopPropagation()
                   setMostrarFormResposta(true)
                 }}
-                className="px-3 py-1.5 bg-blue-600 text-white text-sm rounded hover:bg-blue-700 transition-colors"
+                className="px-3 py-1.5 bg-primary text-primary-foreground text-sm rounded hover:opacity-90 transition-colors"
               >
                 Responder
               </button>
             )}
 
             {reclamacao.status !== "fechada" && (
-              <button className="px-3 py-1.5 bg-gray-200 text-gray-800 text-sm rounded hover:bg-gray-300 transition-colors">
+              <button className="px-3 py-1.5 bg-card text-theme text-sm rounded hover-theme transition-colors">
                 {reclamacao.status === "resolvida" ? "Reabrir" : "Marcar como resolvida"}
               </button>
             )}
@@ -175,7 +175,7 @@ export default function ReclamacaoItem({ reclamacao }: ReclamacaoItemProps) {
               <textarea
                 value={novaResposta}
                 onChange={(e) => setNovaResposta(e.target.value)}
-                className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                className="w-full p-2 border border-input bg-input rounded focus:ring-2 focus:ring-primary focus:border-primary outline-none"
                 rows={3}
                 placeholder="Escreva sua resposta..."
                 required
@@ -184,13 +184,13 @@ export default function ReclamacaoItem({ reclamacao }: ReclamacaoItemProps) {
                 <button
                   type="button"
                   onClick={() => setMostrarFormResposta(false)}
-                  className="px-3 py-1.5 bg-gray-200 text-gray-800 text-sm rounded hover:bg-gray-300 transition-colors"
+                  className="px-3 py-1.5 bg-card text-theme text-sm rounded hover-theme transition-colors"
                 >
                   Cancelar
                 </button>
                 <button
                   type="submit"
-                  className="px-3 py-1.5 bg-blue-600 text-white text-sm rounded hover:bg-blue-700 transition-colors"
+                  className="px-3 py-1.5 bg-primary text-primary-foreground text-sm rounded hover:opacity-90 transition-colors"
                 >
                   Enviar
                 </button>

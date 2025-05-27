@@ -19,11 +19,11 @@ export default function FiltrosReclamacoes({ filtros, onFiltroChange }: FiltrosP
   }
 
   return (
-    <div className="bg-gray-50 p-4 rounded-lg mb-6">
+    <div className="bg-theme p-4 rounded-lg mb-6">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div className="flex flex-col sm:flex-row gap-4">
           <div className="w-full sm:w-auto">
-            <label htmlFor="status" className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="status" className="block text-sm font-medium text-theme mb-1">
               Status
             </label>
             <select
@@ -33,17 +33,17 @@ export default function FiltrosReclamacoes({ filtros, onFiltroChange }: FiltrosP
               onChange={handleChange}
               className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
             >
-              <option value="">Todos</option>
-              <option value="aberta">Aberta</option>
-              <option value="em_analise">Em análise</option>
-              <option value="respondida">Respondida</option>
-              <option value="resolvida">Resolvida</option>
-              <option value="fechada">Fechada</option>
+              <option className="bg-theme" value="">Todos</option>
+              <option className="bg-theme" value="aberta">Aberta</option>
+              <option className="bg-theme" value="em_analise">Em análise</option>
+              <option className="bg-theme" value="respondida">Respondida</option>
+              <option className="bg-theme" value="resolvida">Resolvida</option>
+              <option className="bg-theme" value="fechada">Fechada</option>
             </select>
           </div>
 
           <div className="w-full sm:w-auto">
-            <label htmlFor="linha" className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="linha" className="block text-sm font-medium text-theme mb-1">
               Linha
             </label>
             <input
@@ -68,11 +68,11 @@ export default function FiltrosReclamacoes({ filtros, onFiltroChange }: FiltrosP
               onChange={handleChange}
               className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
             >
-              <option value="">Qualquer data</option>
-              <option value="7dias">Últimos 7 dias</option>
-              <option value="30dias">Últimos 30 dias</option>
-              <option value="90dias">Últimos 90 dias</option>
-              <option value="12meses">Últimos 12 meses</option>
+              <option className="bg-theme" value="">Qualquer data</option>
+              <option className="bg-theme" value="7dias">Últimos 7 dias</option>
+              <option className="bg-theme" value="30dias">Últimos 30 dias</option>
+              <option className="bg-theme" value="90dias">Últimos 90 dias</option>
+              <option className="bg-theme" value="12meses">Últimos 12 meses</option>
             </select>
           </div>
         </div>
@@ -88,9 +88,9 @@ export default function FiltrosReclamacoes({ filtros, onFiltroChange }: FiltrosP
             onChange={handleChange}
             className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
           >
-            <option value="recentes">Mais recentes</option>
-            <option value="antigas">Mais antigas</option>
-            <option value="atualizadas">Recentemente atualizadas</option>
+            <option className="bg-theme" value="recentes">Mais recentes</option>
+            <option className="bg-theme" value="antigas">Mais antigas</option>
+            <option className="bg-theme" value="atualizadas">Recentemente atualizadas</option>
           </select>
         </div>
       </div>

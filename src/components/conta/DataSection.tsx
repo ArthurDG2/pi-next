@@ -24,25 +24,23 @@ export default function DataSection() {
     <div className="space-y-6">
       <h2 className="text-xl font-semibold border-b pb-2">Dados</h2>
 
-      <div className="border-b border-gray-200">
-        <nav className="flex space-x-8">
+      <div className="border-b border-gray-200 bg-theme">
+        <nav className="flex space-x-8 bg-theme">
           <button
             onClick={() => setActiveTab("favoritas")}
-            className={`py-2 px-1 border-b-2 font-medium text-sm ${
-              activeTab === "favoritas"
-                ? "border-blue-500 text-blue-600"
-                : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
-            }`}
+            className={`py-2 px-1 border-b-2 font-medium text-sm ${activeTab === "favoritas"
+              ? "border-blue-500 text-blue-600"
+              : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+              }`}
           >
             Rotas Favoritas
           </button>
           <button
             onClick={() => setActiveTab("historico")}
-            className={`py-2 px-1 border-b-2 font-medium text-sm ${
-              activeTab === "historico"
-                ? "border-blue-500 text-blue-600"
-                : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
-            }`}
+            className={`py-2 px-1 border-b-2 font-medium text-sm ${activeTab === "historico"
+              ? "border-blue-500 text-blue-600"
+              : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+              }`}
           >
             Histórico
           </button>
@@ -50,9 +48,9 @@ export default function DataSection() {
       </div>
 
       {activeTab === "favoritas" && (
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto bg-theme">
           <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
+            <thead>
               <tr>
                 <th
                   scope="col"
@@ -80,17 +78,17 @@ export default function DataSection() {
                 </th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
+            <tbody className="bg-theme divide-y divide-gray-200">
               {favoriteRoutes.map((route) => (
                 <tr key={route.id}>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm font-medium text-gray-900">{route.name}</div>
+                    <div className="text-sm font-medium text-theme">{route.name}</div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-500">{route.distance}</div>
+                    <div className="text-sm text-theme">{route.distance}</div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-500">{route.frequency}</div>
+                    <div className="text-sm text-theme">{route.frequency}</div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     <button className="text-blue-600 hover:text-blue-800 mr-3">Editar</button>
@@ -106,7 +104,7 @@ export default function DataSection() {
       {activeTab === "historico" && (
         <div className="overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
+            <thead className="bg-theme">
               <tr>
                 <th
                   scope="col"
@@ -134,19 +132,19 @@ export default function DataSection() {
                 </th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
+            <tbody className="bg-theme divide-y divide-gray-200">
               {history.map((item) => (
                 <tr key={item.id}>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm font-medium text-gray-900">{item.route}</div>
+                    <div className="text-sm font-medium text-theme">{item.route}</div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-500">{item.date}</div>
+                    <div className="text-sm text-theme">{item.date}</div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-500">{item.time}</div>
+                    <div className="text-sm text-theme">{item.time}</div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm">
                     <button className="text-blue-600 hover:text-blue-800 mr-3">Ver Detalhes</button>
                     <button className="text-red-600 hover:text-red-800">Remover</button>
                   </td>

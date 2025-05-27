@@ -49,43 +49,43 @@ export default function Home() {
     }, []);
 
     return (
-        <div className="bg-white">
+        <div className="bg-theme">
             <Navbar />
             <div className="max-w-5xl mx-auto px-4 mt-8">
                 <h1 className="text-3xl md:text-4xl font-bold mb-2">
                     {saudacao}, Bem-vindo ao InfoBus
                 </h1>
-                <p className="text-lg text-gray-600 mb-8">
+                <p className="text-lg text-theme mb-8">
                     Planeje suas viagens, acompanhe o transporte em tempo real e descubra a melhor forma de se locomover pela cidade.
                 </p>
                 <div className="flex flex-col md:flex-row gap-4 mb-8 max-h-32">
                     {/* Card Ocupação Média */}
-                    <div className="flex-1 bg-white rounded-lg shadow p-3 pl-5 flex flex-col justify-around items-start min-w-[220px] border border-gray-200 hover:translate-y-[-5px] hover:shadow-lg transition-all duration-300">
+                    <div className="flex-1 bg-theme rounded-lg shadow p-3 pl-5 flex flex-col justify-around items-start min-w-[220px] border border-gray-200 hover:translate-y-[-5px] hover:shadow-lg transition-all duration-300">
                         <div className="flex items-center gap-2 mb-2">
-                            <User className="text-gray-500" size={22} />
-                            <span className="text-gray-500 text-sm">Ocupação Média</span>
+                            <User className="text-theme" size={22} />
+                            <span className="text-theme text-sm">Ocupação Média</span>
                         </div>
-                        <span className="text-3xl font-bold text-black">72%</span>
+                        <span className="text-3xl font-bold text-theme">72%</span>
                         <span className="text-xs text-green-600 mt-1">+5% comparado a ontem</span>
                     </div>
                     {/* Card Curiosidades */}
-                    <div className="flex-[2] bg-white rounded-lg shadow p-6 flex flex-col justify-between items-center min-w-[320px] border border-gray-200 hover:translate-y-[-5px] hover:shadow-lg transition-all duration-300">
+                    <div className="flex-[2] bg-theme rounded-lg shadow p-6 flex flex-col justify-between items-center min-w-[320px] border border-gray-200 hover:translate-y-[-5px] hover:shadow-lg transition-all duration-300">
                         <div className="w-full">
                             <div className="flex items-center gap-2 mb-2">
-                                <Info className="text-gray-500" size={22} />
-                                <span className="font-semibold text-gray-700 text-lg">Você sabia?</span>
+                                <Info className="text-theme" size={22} />
+                                <span className="font-semibold text-theme text-lg">Você sabia?</span>
                             </div>
-                            <p className="text-gray-700 mt-2 mb-4 min-h-[48px]">{curiosidades[curiosidadeIndex]}</p>
+                            <p className="text-theme mt-2 mb-4 min-h-[48px]">{curiosidades[curiosidadeIndex]}</p>
                         </div>
                     </div>
                     {/* Card Ônibus Ativos */}
-                    <div className="flex-1 bg-white rounded-lg shadow p-3 pl-5 flex flex-col justify-around items-start min-w-[220px] border border-gray-200 hover:translate-y-[-5px] hover:shadow-lg transition-all duration-300">
+                    <div className="flex-1 bg-theme rounded-lg shadow p-3 pl-5 flex flex-col justify-around items-start min-w-[220px] border border-gray-200 hover:translate-y-[-5px] hover:shadow-lg transition-all duration-300">
                         <div className="flex items-center gap-2 mb-2">
-                            <Bus className="text-gray-500" size={22} />
-                            <span className="text-gray-500 text-sm">Ônibus Ativos</span>
+                            <Bus className="text-theme" size={22} />
+                            <span className="text-theme text-sm">Ônibus Ativos</span>
                         </div>
-                        <span className="text-3xl font-bold text-black">{numeroOnibus !== null ? numeroOnibus : '...'}</span>
-                        <span className="text-xs text-gray-600 mt-1">98% da frota</span>
+                        <span className="text-3xl font-bold text-theme">{numeroOnibus !== null ? numeroOnibus : '...'}</span>
+                        <span className="text-xs text-theme mt-1">98% da frota</span>
                     </div>
                 </div>
             </div>

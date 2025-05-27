@@ -24,15 +24,14 @@ export default function MinhaContaPage() {
       <div className="flex flex-col md:flex-row gap-8 py-10 mx-10">
         {/* Sidebar / Tabs */}
         <div className="w-full md:w-64 shrink-0">
-          <div className="bg-white rounded-lg shadow overflow-hidden">
+          <div className="bg-theme rounded-lg shadow overflow-hidden">
             <ul className="divide-y divide-gray-200">
               {tabs.map((tab) => (
                 <li key={tab.id}>
                   <button
                     onClick={() => setActiveTab(tab.id)}
-                    className={`w-full text-left px-4 py-3 transition-colors ${
-                      activeTab === tab.id ? "bg-gray-100 font-medium" : "hover:bg-gray-50"
-                    }`}
+                    className={`w-full text-left px-4 py-3 transition-colors ${activeTab === tab.id ? "bg-gray-300 font-medium" : "hover:bg-gray-400"
+                      }`}
                   >
                     {tab.label}
                   </button>
@@ -43,7 +42,7 @@ export default function MinhaContaPage() {
         </div>
 
         {/* Content */}
-        <div className="flex-1 bg-white rounded-lg shadow p-6">
+        <div className="flex-1 bg-theme rounded-lg dark:border shadow p-6">
           {activeTab === "perfil" && <ProfileSection />}
           {activeTab === "seguranca" && <SecuritySection />}
           {activeTab === "preferencias" && <PreferencesSection />}

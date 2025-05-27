@@ -27,7 +27,7 @@ export const Navbar = () => {
     "top-full",
     "left-0",
     "right-0",
-    "bg-gray-300",
+    "bg-theme",
     "w-full",
     "p-4",
     "gap-4",
@@ -42,11 +42,11 @@ export const Navbar = () => {
   const desktopMenuClasses = "hidden md:flex gap-6";
 
   return (
-    <nav className="bg-white text-black p-4 sm:p-6 sticky top-0 z-50">
+    <nav className="bg-theme text-theme p-4 sm:p-6 sticky top-0 z-50">
       <div className="container mx-auto flex justify-between items-center">
         <Link
           href="/"
-          className="text-2xl font-bold hover:text-gray-600 transition-colors"
+          className="text-2xl font-bold hover-theme transition-colors"
           onClick={() => setIsOpen(false)}
         >
           InfoBus
@@ -58,7 +58,7 @@ export const Navbar = () => {
             <Link
               key={link.href}
               href={link.href}
-              className="hover:text-gray-600 transition-colors"
+              className="hover-theme transition-colors"
             >
               {link.label}
             </Link>
@@ -68,7 +68,7 @@ export const Navbar = () => {
         {/* Mobile Menu Button */}
         <button
           onClick={toggleMenu}
-          className="md:hidden p-2 rounded-md hover:bg-gray-400 transition-colors"
+          className="md:hidden p-2 rounded-md hover-theme transition-colors"
           aria-label={isOpen ? "Fechar menu" : "Abrir menu"}
         >
           <svg
@@ -102,14 +102,13 @@ export const Navbar = () => {
           <Link
             key={link.href}
             href={link.href}
-            className="hover:text-gray-600 transition-colors py-2 flex items-center gap-2"
+            className="hover-theme transition-colors py-2 flex items-center gap-2"
             onClick={() => setIsOpen(false)}
           >
             <link.icon className="w-5 h-5" />
             {link.label}
           </Link>
         ))}
-
       </div>
     </nav>
   );

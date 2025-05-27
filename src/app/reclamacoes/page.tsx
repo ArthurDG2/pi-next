@@ -29,7 +29,7 @@ export default function ReclamacoesComentariosPage() {
   return (
     <main className="w-full">
       <Navbar />
-      <div className="bg-white rounded-lg shadow overflow-hidden">
+      <div className="bg-theme rounded-lg shadow overflow-hidden">
         <div className="border-b border-gray-200">
           <nav className="flex justify-center">
             {tabs.map((tab) => (

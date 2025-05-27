@@ -3,6 +3,31 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --card-background: #f5f5f5;
+  --card-foreground: #262626;
+  --primary: #2563eb;
+  --primary-foreground: #ffffff;
+  --border: #e5e7eb;
+  --input-background: #ffffff;
+  --input-border: #d1d5db;
+  --hover-background: #f3f4f6;
+  --muted: #6b7280;
+  --muted-foreground: #9ca3af;
+}
+
+.dark {
+  --background: #171717;
+  --foreground: #ffffff;
+  --card-background: #262626;
+  --card-foreground: #f5f5f5;
+  --primary: #3b82f6;
+  --primary-foreground: #ffffff;
+  --border: #404040;
+  --input-background: #262626;
+  --input-border: #404040;
+  --hover-background: #333333;
+  --muted: #9ca3af;
+  --muted-foreground: #6b7280;
 }
 
 @theme inline {
@@ -12,15 +37,50 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #ffffff;
-    --foreground: #141414;
-  }
-}
-
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Classes utilitárias para usar as variáveis CSS */
+.bg-theme {
+  background-color: var(--background);
+}
+
+.text-theme {
+  color: var(--foreground);
+}
+
+.bg-card {
+  background-color: var(--card-background);
+}
+
+.text-card {
+  color: var(--card-foreground);
+}
+
+.border-theme {
+  border-color: var(--border);
+}
+
+.bg-input {
+  background-color: var(--input-background);
+}
+
+.border-input {
+  border-color: var(--input-border);
+}
+
+.hover-theme:hover {
+  background-color: var(--hover-background);
+}
+
+.text-muted {
+  color: var(--muted);
+}
+
+.text-muted-foreground {
+  color: var(--muted-foreground);
 }
