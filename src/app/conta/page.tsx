@@ -42,7 +42,7 @@ export default function MinhaContaPage() {
         </div>
 
         {/* Content */}
-        <div className="flex-1 bg-theme rounded-lg dark:border shadow p-6">
+        <div className="flex-1 bg-theme rounded-lg border border-neutral-100 shadow p-6">
           {activeTab === "perfil" && <ProfileSection />}
           {activeTab === "seguranca" && <SecuritySection />}
           {activeTab === "preferencias" && <PreferencesSection />}
