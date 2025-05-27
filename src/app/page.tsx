@@ -56,7 +56,7 @@ export default function Home() {
                     {saudacao}, Bem-vindo ao InfoBus
                 </h1>
                 <p className="text-lg text-theme mb-8">
-                    Planeje suas viagens, acompanhe o transporte em tempo real e descubra a melhor forma de se locomover pela cidade.
+                    Planeje suas viagens, acompanhe o transporte em tempo real e descubra a melhor forma de se locomover pela cidade.52
                 </p>
                 <div className="flex flex-col md:flex-row gap-4 mb-8 max-h-32">
                     {/* Card Ocupação Média */}
