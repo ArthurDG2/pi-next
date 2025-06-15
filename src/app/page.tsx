@@ -4,6 +4,16 @@ import React, { useEffect, useState } from "react";
 import { Navbar } from "../components/Navbar";
 import { Map } from "../components/Map";
 import { User, Bus, Info } from "lucide-react";
+import dynamic from "next/dynamic";
+
+// src/app/page.tsx
+
+
+// Importa o MapOSM de forma dinâmica pra ele só ser renderizado no cliente
+const MapOSM = dynamic(
+  () => import("@/components/MapOSM").then((mod) => mod.MapOSM),
+  { ssr: false }
+);
 
 const curiosidades = [
     "Indaiatuba é conhecida pelo Parque Ecológico, um dos maiores do Brasil.",
@@ -89,7 +99,7 @@ export default function Home() {
                     </div>
                 </div>
             </div>
-            <Map />
+            <MapOSM />
         </div>
     )
 }
