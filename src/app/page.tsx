@@ -2,11 +2,8 @@
 
 import React, { useEffect, useState } from "react";
 import { Navbar } from "../components/Navbar";
-import { Map } from "../components/Map";
 import { User, Bus, Info } from "lucide-react";
 import dynamic from "next/dynamic";
-
-// src/app/page.tsx
 
 
 // Importa o MapOSM de forma dinâmica pra ele só ser renderizado no cliente
@@ -52,7 +49,7 @@ export default function Home() {
         fetch("https://api-infobus-proj-pi.onrender.com/onibus")
             .then(res => res.json())
             .then(data => {
-                console.log("Resposta da API:", data);
+                console.log("Resposta da API:", data.length);
                 setNumeroOnibus(Array.isArray(data) ? data.length : 0);
             })
             .catch(() => setNumeroOnibus(0));

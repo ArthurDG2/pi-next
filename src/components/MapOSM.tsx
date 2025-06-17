@@ -50,7 +50,7 @@ export const MapOSM = () => {
     return (
         <div className="bg-theme flex flex-col md:flex-row gap-4 w-[90%] mx-auto justify-center">
             <div className="relative h-[500px] w-full md:w-2/3">
-                <div className="flex bg-white rounded-md absolute top-4 left-1/2 transform -translate-x-1/2 z-10 w-11/12 max-w-md border border-black">
+                <div className="z-20 flex bg-white rounded-md absolute top-4 left-1/2 transform -translate-x-1/2 z-10 w-11/12 max-w-md border border-black">
                     <div className="relative w-full">
                         <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
                         <input
@@ -62,7 +62,7 @@ export const MapOSM = () => {
                 </div>
 
                 {/* Mapa em iframe */}
-                <div style={{ width: '100%', height: '100%', position: 'relative' }}>
+                <div style={{ width: '100%', height: '100%', position: 'relative', zIndex: '10' }}>
                     <MapContainer
                         center={[-23.08164, -47.23247]} // Coordenadas de Indaiatuba, SP
                         zoom={13}
