@@ -23,26 +23,34 @@ export const MapaRotaOSM: React.FC<MapaRotaOSMProps> = ({ ruas }) => {
   const [mapCenter, setMapCenter] = useState<[number, number] | null>(null);
 
   // Geocodifica cada rua para coordenadas
-  useEffect(() => {
+useEffect(() => {
     if (!ruas || ruas.length === 0) return;
     setLoading(true);
+    setCoords([]);
+    setRota([]);
 
-    Promise.all(
-      ruas.map((rua) =>
-        fetch(
-          `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(rua)}`
-        )
-          .then((res) => res.json())
-          .then((data) =>
-            data[0] ? [parseFloat(data[0].lat), parseFloat(data[0].lon)] : null
-          )
-      )
-    ).then((results) => {
-      const validCoords = results.filter(Boolean) as [number, number][];
+    // Chamando o endpoint do NOSSO backend que acabamos de criar
+    fetch('http://localhost:3000/onibus/geocodificar', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ ruas: ruas }),
+    })
+    .then(res => res.json())
+    .then(coordenadasRecebidas => {
+      const validCoords = coordenadasRecebidas.filter(Boolean);
       setCoords(validCoords);
+    })
+    .catch(err => {
+      console.error("Erro no processo de geocodificação:", err);
+    })
+    .finally(() => {
       setLoading(false);
     });
-  }, [ruas]);
+
+}, [ruas]); // Este hook roda toda vez que a lista de 'ruas' muda
+
 
   // Define o centro do mapa apenas uma vez
   useEffect(() => {
