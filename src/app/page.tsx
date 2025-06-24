@@ -5,12 +5,14 @@ import { Navbar } from "../components/Navbar";
 import { User, Bus, Info } from "lucide-react";
 import dynamic from "next/dynamic";
 
+//import { MapaRotaOSM } from "@/components/MapaRotaOSM";
+
+
 
 // Importa o MapOSM de forma dinâmica pra ele só ser renderizado no cliente
-const MapOSM = dynamic(
-  () => import("@/components/MapOSM").then((mod) => mod.MapOSM),
-  { ssr: false }
-);
+const MapOSM = dynamic(() => import("@/components/MapOSM").then((mod) => mod.MapOSM),{ ssr: false });
+
+const MapaRotaOSM = dynamic(() => import("@/components/MapaRotaOSM").then((mod) => mod.MapaRotaOSM),{ ssr: false });
 
 const curiosidades = [
     "Indaiatuba é conhecida pelo Parque Ecológico, um dos maiores do Brasil.",
@@ -27,11 +29,19 @@ function getSaudacao() {
     if (hora < 18) return "Boa tarde";
     return "Boa noite";
 }
+ const ruas = [
+        "Praça da Sé, São Paulo",
+        "Liberdade, São Paulo",
+        "Avenida Paulista, São Paulo",
+        "Rua Augusta, São Paulo",
+        "Parque Ibirapuera, São Paulo"
+    ];
 
 export default function Home() {
     const [curiosidadeIndex, setCuriosidadeIndex] = useState(0);
     const [saudacao, setSaudacao] = useState(getSaudacao());
     const [numeroOnibus, setNumeroOnibus] = useState<number | null>(null);
+   
 
 
     useEffect(() => {
@@ -96,6 +106,7 @@ export default function Home() {
                     </div>
                 </div>
             </div>
+            {/* <MapaRotaOSM ruas={ruas} /> */}
             <MapOSM />
         </div>
     )
