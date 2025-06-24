@@ -51,3 +51,4 @@ export const RotaProntaMap: React.FC<RotaProntaMapProps> = ({ caminhoDaRota, mar
     </div>
   );
 };
+export default RotaProntaMap;
