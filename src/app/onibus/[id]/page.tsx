@@ -55,9 +55,7 @@ export default async function DetalheOnibusPage({ params }:{params: Promise<{ id
       getAuthenticatedUser(token)
   ]);
 
-  // --- CORREÇÃO APLICADA AQUI ---
-  // Se 'onibus' for nulo, a função retorna este componente de erro e para de executar.
-  // Isso garante para o TypeScript que, no resto da função, 'onibus' nunca será nulo.
+  
   if (!onibus) {
     return (
         <div>

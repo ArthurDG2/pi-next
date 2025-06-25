@@ -26,7 +26,7 @@ export function BotaoSalvarRota({ routeNumber, isInitiallySaved }: BotaoSalvarRo
     const endpoint = isSaved ? '/users/rotas/remover' : '/users/rotas/salvar';
 
     try {
-      const res = await fetch(`http://localhost:3000${endpoint}`, {
+      const res = await fetch(`https://api-infobus-proj-pi.onrender.com${endpoint}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
