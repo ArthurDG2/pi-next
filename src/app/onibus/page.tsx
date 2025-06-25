@@ -66,7 +66,7 @@ export default function PesquisarPage() {
     setError(null);
 
     try {
-      const response = await axios.post('https://api-infobus-proj-pi.onrender.com/pesquisa-avancada', payload);
+      const response = await axios.post('https://api-infobus-proj-pi.onrender.com/onibus/pesquisa-avancada', payload);
       setDisplayedRoutes(response.data);
     } catch (err) {
       setError('Ocorreu um erro ao buscar. Tente novamente.');
