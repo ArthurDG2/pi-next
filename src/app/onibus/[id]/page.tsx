@@ -16,6 +16,9 @@ interface OnibusDetalhado {
   Rota_Geocodificada: [number, number][];
   Caminho_Geocodificado: [number, number][];
 }
+interface DetalheOnibusPageProps {
+  params: { id: string };
+}
 
 // Busca os dados de um ônibus específico
 async function getOnibusDetalhado(id: string): Promise<OnibusDetalhado | null> {
@@ -45,7 +48,7 @@ async function getAuthenticatedUser(token: string | undefined) {
 }
 
 
-export default async function DetalheOnibusPage({ params }: { params: { id: string } }) {
+export default async function DetalheOnibusPage({ params }: DetalheOnibusPageProps) {
   // Busca os dados do ônibus e do usuário em paralelo para mais performance
   const token = (await cookies()).get('authToken')?.value;
   const [onibus, user] = await Promise.all([
