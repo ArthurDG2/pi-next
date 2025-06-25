@@ -5,7 +5,7 @@ import { Bookmark, BookmarkCheck } from "lucide-react";
 
 interface BotaoSalvarRotaProps {
   routeNumber: string;
-  isInitiallySaved: boolean; // O estado inicial (se a rota já está salva ou não)
+  isInitiallySaved: boolean;
 }
 
 export function BotaoSalvarRota({ routeNumber, isInitiallySaved }: BotaoSalvarRotaProps) {

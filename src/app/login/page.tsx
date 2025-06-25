@@ -4,26 +4,19 @@ import { useState } from 'react';
 import { Navbar } from '@/components/Navbar';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { Footer } from '@/components/Footer';
 
 export default function LoginPage() {
-  // Estados para o formulário
   const [accountType, setAccountType] = useState<'user' | 'empresa'>('user');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  
-  // Estados para controle de UI
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  
   const router = useRouter();
-
-  // Função para lidar com o envio do formulário
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     setError(null);
-
-    // Determina qual endpoint da API chamar
     const endpoint = accountType === 'user' 
       ? 'http://localhost:3000/auth/users/login' 
       : 'http://localhost:3000/auth/empresa/login';
@@ -41,10 +34,8 @@ export default function LoginPage() {
         throw new Error(data.message || 'Falha no login.');
       }
       
-      // Se o login for bem-sucedido, salva o token
       if (data.access_token) {
         localStorage.setItem('authToken', data.access_token);
-        // Redireciona para a página inicial e recarrega para que a Navbar atualize
         window.location.href = '/';
       }
 
@@ -126,6 +117,7 @@ export default function LoginPage() {
           </form>
         </div>
       </div>
+      <Footer />
     </div>
   );
 }

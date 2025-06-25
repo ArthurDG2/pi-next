@@ -5,6 +5,7 @@ import { Navbar } from '@/components/Navbar';
 import Link from 'next/link';
 import { User, Heart, Shield, Loader2, ServerCrash, Bus, Trash2, Edit, X, CheckCircle } from 'lucide-react'; // Adicionei CheckCircle para feedback
 import axios from 'axios';
+import { Footer } from '@/components/Footer';
 
 // --- Tipos de Dados --- (sem alteração)
 interface UserProfile {
@@ -16,27 +17,21 @@ interface RotaSalva {
   Num_Onibus: string;
   Rota: string[];
 }
-
-// --- Componente Principal da Página ---
 export default function MinhaContaPage() {
-  // ... (seus outros estados: profile, savedRoutes, etc. não mudam) ...
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [isEditingProfile, setIsEditingProfile] = useState(false);
   const [tempProfile, setTempProfile] = useState<UserProfile | null>(null);
   const [savedRoutes, setSavedRoutes] = useState<RotaSalva[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
-  // --- 2. Estados para o formulário de senha ---
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [isSavingPassword, setIsSavingPassword] = useState(false);
   const [passwordError, setPasswordError] = useState<string | null>(null);
   const [passwordSuccess, setPasswordSuccess] = useState<string | null>(null);
 
-
   const fetchData = useCallback(async () => {
-    // ... (sua função fetchData permanece igual)
+
     setIsLoading(true);
     setError(null);
     const token = localStorage.getItem('authToken');
@@ -74,11 +69,9 @@ export default function MinhaContaPage() {
   }, [fetchData]);
 
   const handleRemoveRoute = async (routeNumber: string) => {
-    // ... (sua função handleRemoveRoute permanece igual)
     const token = localStorage.getItem('authToken');
     const originalRoutes = savedRoutes;
     setSavedRoutes(prevRoutes => prevRoutes.filter(r => r.Num_Onibus !== routeNumber));
-
     try {
       await axios.post(
         'http://localhost:3000/users/rotas/remover',
@@ -92,14 +85,14 @@ export default function MinhaContaPage() {
   };
 
   const handleSaveProfile = () => {
-    // TODO: Implementar
+
     if (tempProfile) setProfile(tempProfile);
     setIsEditingProfile(false);
   }
 
-  // --- 3. Função para lidar com a alteração de senha ---
+ 
   const handleChangePassword = async (e: FormEvent) => {
-    e.preventDefault(); // Impede o recarregamento da página
+    e.preventDefault(); 
     setIsSavingPassword(true);
     setPasswordError(null);
     setPasswordSuccess(null);
@@ -114,8 +107,8 @@ export default function MinhaContaPage() {
     try {
       const response = await axios.patch(
         'http://localhost:3000/users/me/alterar-senha',
-        { senhaAtual: currentPassword, novaSenha: newPassword }, // Corpo da requisição
-        { headers: { 'Authorization': `Bearer ${token}` } } // Cabeçalho
+        { senhaAtual: currentPassword, novaSenha: newPassword }, 
+        { headers: { 'Authorization': `Bearer ${token}` } } 
       );
 
       setPasswordSuccess(response.data.message);
@@ -258,8 +251,6 @@ export default function MinhaContaPage() {
 
 
 
-        {/* --- SEÇÃO DE ROTAS SALVAS --- */}
-
         <section className="bg-card p-6 sm:p-8 rounded-xl border border-border shadow-sm">
 
           <h2 className="text-2xl font-semibold text-foreground mb-6 flex items-center gap-3"><Heart /> Rotas Favoritas</h2>
@@ -300,14 +291,9 @@ export default function MinhaContaPage() {
 
           )}
 
-        </section>
-
-
-        {/* --- SEÇÃO DE SEGURANÇA (MODIFICADA) --- */}
+        </section>    
         <section className="bg-card p-6 sm:p-8 rounded-xl border border-border shadow-sm">
           <h2 className="text-2xl font-semibold text-foreground mb-6 flex items-center gap-3"><Shield /> Segurança</h2>
-
-          {/* 4. Conecte o formulário à nossa lógica */}
           <form onSubmit={handleChangePassword} className="space-y-4 max-w-sm">
             <h3 className="text-lg font-medium">Alterar Senha</h3>
             <div>
@@ -341,8 +327,6 @@ export default function MinhaContaPage() {
                 {isSavingPassword ? 'Salvando...' : 'Alterar Senha'}
               </button>
             </div>
-
-            {/* 5. Feedback para o usuário */}
             {passwordSuccess && (
               <div className="flex items-center gap-2 text-green-600 dark:text-green-400">
                 <CheckCircle size={18} />
@@ -358,6 +342,7 @@ export default function MinhaContaPage() {
           </form>
         </section>
       </main>
+      <Footer />
     </div>
   );
 }

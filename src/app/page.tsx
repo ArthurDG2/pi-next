@@ -1,113 +1,131 @@
-"use client"
+"use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, FormEvent } from "react";
+import { useRouter } from 'next/navigation'; 
 import { Navbar } from "../components/Navbar";
-import { User, Bus, Info } from "lucide-react";
+import { Footer } from "../components/Footer";
+import { User, Bus, Info, Search } from "lucide-react";
 import dynamic from "next/dynamic";
 
-//import { MapaRotaOSM } from "@/components/MapaRotaOSM";
-
-
-
-// Importa o MapOSM de forma dinâmica pra ele só ser renderizado no cliente
 const MapOSM = dynamic(() => import("@/components/MapOSM").then((mod) => mod.MapOSM),{ ssr: false });
-
-const MapaRotaOSM = dynamic(() => import("@/components/MapaRotaOSM").then((mod) => mod.MapaRotaOSM),{ ssr: false });
 
 const curiosidades = [
     "Indaiatuba é conhecida pelo Parque Ecológico, um dos maiores do Brasil.",
     "A cidade tem um dos melhores índices de qualidade de vida do país.",
-    "Indaiatuba foi fundada em 1830.",
-    "O aeroporto de Viracopos fica a poucos minutos da cidade.",
-    "Indaiatuba possui diversas ciclovias e incentiva o uso de bicicletas.",
-    // Adicione mais curiosidades se desejar
+    "Indaiatuba foi fundada em 1830 e seu nome significa 'ajuntamento de indaiás'.",
+    "O aeroporto de Viracopos, um dos mais movimentados do Brasil, fica a poucos minutos da cidade.",
+    "Indaiatuba possui mais de 100 km de ciclovias, incentivando o transporte sustentável.",
 ];
 
 function getSaudacao() {
     const hora = new Date().getHours();
-    if (hora < 12) return "Bom dia";
-    if (hora < 18) return "Boa tarde";
+    if (hora >= 5 && hora < 12) return "Bom dia";
+    if (hora >= 12 && hora < 18) return "Boa tarde";
     return "Boa noite";
 }
- const ruas = [
-        "Praça da Sé, São Paulo",
-        "Liberdade, São Paulo",
-        "Avenida Paulista, São Paulo",
-        "Rua Augusta, São Paulo",
-        "Parque Ibirapuera, São Paulo"
-    ];
 
-export default function Home() {
+export default function HomePage() {
     const [curiosidadeIndex, setCuriosidadeIndex] = useState(0);
-    const [saudacao, setSaudacao] = useState(getSaudacao());
+    const [saudacao, setSaudacao] = useState("");
     const [numeroOnibus, setNumeroOnibus] = useState<number | null>(null);
-   
+    const [termoBusca, setTermoBusca] = useState('');
+    const router = useRouter();
 
-
+    
     useEffect(() => {
-        const interval = setInterval(() => {
+        setSaudacao(getSaudacao());
+
+        
+        fetch("http://localhost:3000/onibus")
+            .then(res => res.json())
+            .then(data => setNumeroOnibus(Array.isArray(data) ? data.length : 0))
+            .catch(() => setNumeroOnibus(0));
+
+        // Timer para as curiosidades
+        const curiosidadeInterval = setInterval(() => {
             setCuriosidadeIndex((prev) => (prev + 1) % curiosidades.length);
-        }, 6000); // Troca a cada 6 segundos
-        const timer = setInterval(() => setSaudacao(getSaudacao()), 60000);
+        }, 6000);
+
+        // Timer para atualizar a saudação
+        const saudacaoInterval = setInterval(() => setSaudacao(getSaudacao()), 60000);
+
         return () => {
-            clearInterval(interval);
-            clearInterval(timer);
+            clearInterval(curiosidadeInterval);
+            clearInterval(saudacaoInterval);
         };
     }, []);
 
-    useEffect(() => {
-        fetch("https://api-infobus-proj-pi.onrender.com/onibus")
-            .then(res => res.json())
-            .then(data => {
-                console.log("Resposta da API:", data.length);
-                setNumeroOnibus(Array.isArray(data) ? data.length : 0);
-            })
-            .catch(() => setNumeroOnibus(0));
-    }, []);
+    // Função para lidar com a busca
+    const handleSearch = (e: FormEvent) => {
+      e.preventDefault();
+      // Redireciona para a página de pesquisa, passando o termo como query param
+      router.push(`/pesquisar?termo=${encodeURIComponent(termoBusca)}`);
+    };
 
     return (
-        <div className="bg-theme">
+        <div className="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200">
             <Navbar />
-            <div className="max-w-5xl mx-auto px-4 mt-8">
-                <h1 className="text-3xl md:text-4xl font-bold mb-2">
-                    {saudacao}, Bem-vindo ao InfoBus
-                </h1>
-                <p className="text-lg text-theme mb-8">
-                    Planeje suas viagens, acompanhe o transporte em tempo real e descubra a melhor forma de se locomover pela cidade.52
-                </p>
-                <div className="flex flex-col md:flex-row gap-4 mb-8 max-h-32">
-                    {/* Card Ocupação Média */}
-                    <div className="flex-1 bg-theme rounded-lg shadow p-3 pl-5 flex flex-col justify-around items-start min-w-[220px] border border-gray-200 hover:translate-y-[-5px] hover:shadow-lg transition-all duration-300">
-                        <div className="flex items-center gap-2 mb-2">
-                            <User className="text-theme" size={22} />
-                            <span className="text-theme text-sm">Ocupação Média</span>
-                        </div>
-                        <span className="text-3xl font-bold text-theme">72%</span>
-                        <span className="text-xs text-green-600 mt-1">+5% comparado a ontem</span>
-                    </div>
-                    {/* Card Curiosidades */}
-                    <div className="flex-[2] bg-theme rounded-lg shadow p-6 flex flex-col justify-between items-center min-w-[320px] border border-gray-200 hover:translate-y-[-5px] hover:shadow-lg transition-all duration-300">
-                        <div className="w-full">
-                            <div className="flex items-center gap-2 mb-2">
-                                <Info className="text-theme" size={22} />
-                                <span className="font-semibold text-theme text-lg">Você sabia?</span>
+            <main>
+                {/* --- SEÇÃO HERO --- */}
+                <section className="bg-gradient-to-br from-blue-600 to-indigo-700 text-white text-center py-20 px-4">
+                    <h1 className="text-4xl md:text-5xl font-extrabold mb-3 drop-shadow-md">
+                        {saudacao}, Bem-vindo ao InfoBus!
+                    </h1>
+                    <p className="max-w-2xl mx-auto text-lg text-blue-100 mb-8 drop-shadow">
+                        Seu assistente de transporte público em Indaiatuba. Encontre sua linha com facilidade.
+                    </p>
+                    
+                </section>
+
+                {/* --- SEÇÃO DE CARDS DE ESTATÍSTICAS --- */}
+                <section className="py-16">
+                    <div className="container mx-auto px-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                            {/* Card Ônibus em Operação */}
+                            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 flex flex-col items-start hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
+                                <div className="bg-blue-100 dark:bg-blue-900/50 p-3 rounded-full mb-4">
+                                    <Bus className="text-blue-600 dark:text-blue-400" size={28} />
+                                </div>
+                                <span className="text-sm font-medium text-gray-500 dark:text-gray-400">Linhas Cadastradas</span>
+                                <span className="text-4xl font-bold mt-1">{numeroOnibus !== null ? numeroOnibus : '...'}</span>
                             </div>
-                            <p className="text-theme mt-2 mb-4 min-h-[48px]">{curiosidades[curiosidadeIndex]}</p>
+
+                            {/* Card Ocupação Média (Exemplo estático) */}
+                            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 flex flex-col items-start hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
+                                <div className="bg-green-100 dark:bg-green-900/50 p-3 rounded-full mb-4">
+                                    <User className="text-green-600 dark:text-green-400" size={28} />
+                                </div>
+                                <span className="text-sm font-medium text-gray-500 dark:text-gray-400">Qualidade de Vida</span>
+                                <span className="text-4xl font-bold mt-1">Top #1</span>
+                                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Ranking nacional entre cidades de médio porte.</p>
+                            </div>
+                            
+                            {/* Card Curiosidades */}
+                            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 flex flex-col items-start hover:shadow-xl hover:-translate-y-2 transition-all duration-300 md:col-span-2 lg:col-span-1">
+                                <div className="bg-yellow-100 dark:bg-yellow-900/50 p-3 rounded-full mb-4">
+                                    <Info className="text-yellow-600 dark:text-yellow-400" size={28} />
+                                </div>
+                                <span className="text-sm font-medium text-gray-500 dark:text-gray-400">Você Sabia?</span>
+                                <p className="mt-2 min-h-[72px]">{curiosidades[curiosidadeIndex]}</p>
+                            </div>
                         </div>
                     </div>
-                    {/* Card Ônibus Ativos */}
-                    <div className="flex-1 bg-theme rounded-lg shadow p-3 pl-5 flex flex-col justify-around items-start min-w-[220px] border border-gray-200 hover:translate-y-[-5px] hover:shadow-lg transition-all duration-300">
-                        <div className="flex items-center gap-2 mb-2">
-                            <Bus className="text-theme" size={22} />
-                            <span className="text-theme text-sm">Ônibus Ativos</span>
+                </section>
+                
+                {/* --- SEÇÃO DO MAPA --- */}
+                <section className="bg-gray-100 dark:bg-gray-800/50 py-16">
+                    <div className="container mx-auto px-4">
+                        <h2 className="text-3xl font-bold text-center mb-4">Explore o Mapa Interativo</h2>
+                        <p className="text-lg text-center text-gray-600 dark:text-gray-400 max-w-2xl mx-auto mb-8">
+                            Visualize a cidade e planeje suas rotas com antecedência.
+                        </p>
+                        <div className="h-[500px] w-full rounded-xl shadow-2xl overflow-hidden border-4 border-white dark:border-gray-700">
+                            <MapOSM />
                         </div>
-                        <span className="text-3xl font-bold text-theme">{numeroOnibus !== null ? numeroOnibus : '...'}</span>
-                        <span className="text-xs text-theme mt-1">98% da frota</span>
                     </div>
-                </div>
-            </div>
-            {/* <MapaRotaOSM ruas={ruas} /> */}
-            <MapOSM />
+                </section>
+            </main>
+            <Footer />
         </div>
-    )
+    );
 }

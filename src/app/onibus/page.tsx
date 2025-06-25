@@ -1,70 +1,153 @@
+// app/pesquisar/page.tsx
+"use client";
 
-// src/app/onibus/page.tsx
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 import Link from 'next/link';
-import { Navbar } from '@/components/Navbar'; // Ajuste o caminho se necessário
-import { Bus } from 'lucide-react';
+import { Navbar } from '@/components/Navbar';
+import { AdvancedSearchBar } from '@/components/AdvancedSearchBar';
+import { Bus, Loader2, ServerCrash, PlusCircle, X } from 'lucide-react';
+import { Footer } from '@/components/Footer';
+import { Pagination } from '@/components/pagination'; 
 
-// Define a "forma" dos dados do ônibus
-interface Onibus {
+interface OnibusResult {
   _id: string;
   Num_Onibus: string;
   Empresa_Controladora: string;
   Rota: string[];
 }
 
-// Função para buscar os dados na sua API
-async function getOnibus(): Promise<Onibus[]> {
-  try {
-    const res = await fetch('http://localhost:3000/onibus', {
-      cache: 'no-store', // Garante que os dados sejam sempre frescos
-    });
-    if (!res.ok) {
-      throw new Error('Falha ao buscar dados dos ônibus');
-    }
-    return res.json();
-  } catch (error) {
-    console.error(error);
-    return []; // Retorna uma lista vazia em caso de erro
-  }
-}
+export default function PesquisarPage() {
+  const [allRoutes, setAllRoutes] = useState<OnibusResult[]>([]);
+  const [displayedRoutes, setDisplayedRoutes] = useState<OnibusResult[]>([]);
+  const [isSearchActive, setIsSearchActive] = useState(false);
+  
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
+  const [isSearching, setIsSearching] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [additionalRuas, setAdditionalRuas] = useState<string[]>([]);
+  
 
-// O componente da página
-export default async function ListaOnibusPage() {
-  const onibusList = await getOnibus();
+  const [currentPage, setCurrentPage] = useState(1);
+  const ITEMS_PER_PAGE = 10;
+
+  useEffect(() => {
+    const fetchAllRoutes = async () => {
+      try {
+        const response = await axios.get('http://localhost:3000/onibus'); 
+        setAllRoutes(response.data);
+        setDisplayedRoutes(response.data);
+      } catch (err) {
+        setError('Não foi possível carregar as linhas de ônibus.');
+        console.error(err);
+      } finally {
+        setIsInitialLoading(false);
+      }
+    };
+
+    fetchAllRoutes();
+  }, []);
+
+  const handleSearch = async (filtros: any) => {
+    const todasAsRuas = [...(filtros.ruas || []), ...additionalRuas].filter(Boolean);
+    const payload = { ...filtros, ruas: todasAsRuas, dia: 'Semana' };
+    const hasFilters = Object.values(payload).some(value => Array.isArray(value) ? value.length > 0 : value);
+
+    setCurrentPage(1); 
+
+    if (!hasFilters) {
+      setDisplayedRoutes(allRoutes);
+      setIsSearchActive(false);
+      return;
+    }
+
+    setIsSearching(true);
+    setIsSearchActive(true);
+    setError(null);
+
+    try {
+      const response = await axios.post('http://localhost:3000/onibus/pesquisa-avancada', payload);
+      setDisplayedRoutes(response.data);
+    } catch (err) {
+      setError('Ocorreu um erro ao buscar. Tente novamente.');
+      setDisplayedRoutes([]);
+      console.error(err);
+    } finally {
+      setIsSearching(false);
+    }
+  };
+  
+  const handleAdditionalRuaChange = (index: number, value: string) => {
+    const newRuas = [...additionalRuas];
+    newRuas[index] = value;
+    setAdditionalRuas(newRuas);
+  };
+  const addAdditionalRua = () => setAdditionalRuas([...additionalRuas, '']);
+  const removeAdditionalRua = (index: number) => setAdditionalRuas(additionalRuas.filter((_, i) => i !== index));
+
+
+  const totalPages = Math.ceil(displayedRoutes.length / ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = startIndex + ITEMS_PER_PAGE;
+  const paginatedRoutes = displayedRoutes.slice(startIndex, endIndex);
 
   return (
-    <div className="bg-theme min-h-screen">
+    <div className="bg-gray-100 dark:bg-gray-950 min-h-screen flex flex-col">
       <Navbar />
-      <main className="container mx-auto px-4 py-8">
-        <h1 className="text-3xl md:text-4xl font-bold mb-6 text-theme">
-          Todas as Rotas
-        </h1>
-        {onibusList.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {onibusList.map((onibus) => (
-              <Link href={`/onibus/${onibus._id}`} key={onibus._id}>
-                <div className="bg-card p-6 rounded-lg shadow hover:shadow-xl transition-shadow border border-theme">
-                  <div className="flex items-center gap-4 mb-2">
-                    <Bus className="text-primary" size={28} />
-                    <h2 className="text-2xl font-bold text-card">
-                      Linha {onibus.Num_Onibus}
-                    </h2>
-                  </div>
-                  <p className="text-sm text-muted mb-4">
-                    Operado por: {onibus.Empresa_Controladora}
-                  </p>
-                  <div className="text-xs text-muted">
-                    <p>Início: {onibus.Rota[0]}</p>
-                    <p>Fim: {onibus.Rota[onibus.Rota.length - 1]}</p>
-                  </div>
-                </div>
-              </Link>
+      <div className="flex-grow">
+        <div className="container mx-auto max-w-4xl py-12 px-4">
+          <AdvancedSearchBar onSearch={handleSearch} isLoading={isSearching} />
+          <div className="mt-4 space-y-2">
+            {additionalRuas.map((rua, index) => (
+              <div key={index} className="flex items-center gap-2 animate-in fade-in">
+                <input type="text" placeholder={`Local adicional ${index + 1}`} value={rua} onChange={(e) => handleAdditionalRuaChange(index, e.target.value)} className="w-full p-2 border rounded-lg bg-white dark:bg-gray-800" />
+                <button onClick={() => removeAdditionalRua(index)} className="p-2 text-red-500 hover:bg-red-100 rounded-full"><X size={18}/></button>
+              </div>
             ))}
+            <button onClick={addAdditionalRua} className="text-sm text-blue-600 hover:text-blue-800 flex items-center gap-1"><PlusCircle size={16} />Adicionar outro local de passagem</button>
           </div>
-        ) : (
-          <p className="text-center text-muted">Nenhuma rota encontrada.</p>
-        )}
-      </main>
+        </div>
+        
+        <div className="container mx-auto max-w-4xl pb-12 px-4">
+          {isInitialLoading ? (
+            <div className="text-center p-8"><Loader2 className="animate-spin text-blue-600 mx-auto" size={40} /></div>
+          ) : error ? (
+            <div className="text-center p-8 bg-red-100 border border-red-300 rounded-lg"><ServerCrash className="mx-auto text-red-500 mb-2" size={32}/><p className="text-red-700">{error}</p></div>
+          ) : (
+            <div className="space-y-4">
+              <h2 className="text-2xl font-semibold text-gray-800 dark:text-white">
+                {isSearchActive ? `Resultados da Pesquisa (${displayedRoutes.length})` : `Todas as Linhas (${displayedRoutes.length})`}
+              </h2>
+
+              {paginatedRoutes.length > 0 ? (
+                
+                paginatedRoutes.map((onibus) => (
+                  <Link href={`/onibus/${onibus._id}`} key={onibus._id} className="block bg-white dark:bg-gray-800 p-4 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm hover:border-blue-600 hover:shadow-md transition-all">
+                    <div className="flex justify-between items-center">
+                      <div>
+                        <h3 className="font-bold text-lg text-gray-900 dark:text-gray-100">Linha {onibus.Num_Onibus}</h3>
+                        <p className="text-sm text-gray-500 dark:text-gray-400">{onibus.Empresa_Controladora}</p>
+                      </div>
+                      <Bus className="text-blue-600" />
+                    </div>
+                  </Link>
+                ))
+              ) : (
+                <p className="text-center text-muted-foreground py-8">
+                  {isSearchActive ? "Nenhum resultado encontrado para sua busca." : "Nenhuma linha cadastrada."}
+                </p>
+              )}
+
+              <Pagination 
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={(page) => setCurrentPage(page)}
+              />
+            </div>
+          )}
+        </div>
+      </div>
+      <Footer />
     </div>
   );
 }

@@ -1,9 +1,10 @@
-// src/app/cadastro/page.tsx
+
 "use client";
 
 import { useState } from 'react';
 import { Navbar } from '@/components/Navbar';
-import { useRouter } from 'next/navigation'; // Hook para redirecionamento
+import { useRouter } from 'next/navigation'; 
+import { Footer } from '@/components/Footer';
 
 export default function CadastroPage() {
   const [nome, setNome] = useState('');
@@ -22,14 +23,14 @@ export default function CadastroPage() {
     setSuccess(null);
 
     try {
-      const res = await fetch('http://localhost:3000/users/registrar', { // Endpoint de registro de usuário
+      const res = await fetch('http://localhost:3000/users/registrar', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           nome,
           email,
           senha,
-          idade: Number(idade), // Converte idade para número
+          idade: Number(idade), 
         }),
       });
 
@@ -41,7 +42,7 @@ export default function CadastroPage() {
       
       setSuccess('Cadastro realizado com sucesso! Redirecionando para o login...');
       setTimeout(() => {
-        router.push('/login'); // Redireciona para a página de login após 2 segundos
+        router.push('/login'); 
       }, 2000);
 
     } catch (err: any) {
@@ -59,7 +60,7 @@ export default function CadastroPage() {
           <form onSubmit={handleSubmit} className="bg-card shadow-md rounded-lg px-8 pt-6 pb-8 mb-4 border border-theme">
             <h2 className="text-2xl text-center font-bold mb-6 text-card">Criar Conta</h2>
             
-            {/* Campos do formulário */}
+            
             <div className="mb-4">
               <label className="block text-card text-sm font-bold mb-2" htmlFor="nome">Nome</label>
               <input
@@ -104,7 +105,7 @@ export default function CadastroPage() {
               />
             </div>
             
-            {/* Mensagens de erro/sucesso */}
+            
             {error && <p className="text-red-500 text-xs italic mb-4">{error}</p>}
             {success && <p className="text-green-500 text-xs italic mb-4">{success}</p>}
 
@@ -120,6 +121,7 @@ export default function CadastroPage() {
           </form>
         </div>
       </div>
+      <Footer />
     </div>
   );
 }

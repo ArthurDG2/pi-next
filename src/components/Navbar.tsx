@@ -1,5 +1,3 @@
-// src/components/Navbar.tsx
-
 "use client";
 import Link from "next/link";
 import { useState, useEffect } from "react";
@@ -30,7 +28,6 @@ export const Navbar = () => {
   ];
 
   const authLinks = [
-    { href: "/salvos", label: "Salvos", icon: Bookmark },
     { href: "/conta", label: "Minha Conta", icon: User },
   ];
 
