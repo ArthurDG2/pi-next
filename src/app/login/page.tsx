@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { Navbar } from '@/components/Navbar';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { Footer } from '@/components/Footer';
 
 export default function LoginPage() {
@@ -12,14 +11,13 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter();
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     setError(null);
-    const endpoint = accountType === 'user' 
-      ? 'http://localhost:3000/auth/users/login' 
-      : 'http://localhost:3000/auth/empresa/login';
+    const endpoint = accountType === 'user'
+      ? 'https://api-infobus-proj-pi.onrender.com/auth/users/login'
+      : 'https://api-infobus-proj-pi.onrender.com/auth/empresa/login';
 
     try {
       const res = await fetch(endpoint, {
@@ -33,14 +31,18 @@ export default function LoginPage() {
       if (!res.ok) {
         throw new Error(data.message || 'Falha no login.');
       }
-      
+
       if (data.access_token) {
         localStorage.setItem('authToken', data.access_token);
         window.location.href = '/';
       }
 
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("Erro desconhecido durante o login.");
+      }
     } finally {
       setIsLoading(false);
     }
@@ -53,7 +55,7 @@ export default function LoginPage() {
         <div className="w-full max-w-md">
           <form onSubmit={handleSubmit} className="bg-card shadow-md rounded-lg px-8 pt-6 pb-8 mb-4 border border-theme">
             <h2 className="text-2xl text-center font-bold mb-4 text-card">Acessar Conta</h2>
-            
+
             {/* Abas para selecionar tipo de conta */}
             <div className="flex mb-4 border-b border-gray-200">
               <button
@@ -71,7 +73,7 @@ export default function LoginPage() {
                 Empresa
               </button>
             </div>
-            
+
             {/* Campos do formulário */}
             <div className="mb-4">
               <label className="block text-card text-sm font-bold mb-2" htmlFor="email">
@@ -99,7 +101,7 @@ export default function LoginPage() {
                 required
               />
             </div>
-            
+
             {error && <p className="text-red-500 text-xs italic mb-4">{error}</p>}
 
             <div className="flex items-center justify-between">

@@ -28,15 +28,13 @@ export default function HomePage() {
     const [curiosidadeIndex, setCuriosidadeIndex] = useState(0);
     const [saudacao, setSaudacao] = useState("");
     const [numeroOnibus, setNumeroOnibus] = useState<number | null>(null);
-    const [termoBusca, setTermoBusca] = useState('');
-    const router = useRouter();
 
     
     useEffect(() => {
         setSaudacao(getSaudacao());
 
         
-        fetch("http://localhost:3000/onibus")
+        fetch("https://api-infobus-proj-pi.onrender.com/onibus")
             .then(res => res.json())
             .then(data => setNumeroOnibus(Array.isArray(data) ? data.length : 0))
             .catch(() => setNumeroOnibus(0));
@@ -55,12 +53,7 @@ export default function HomePage() {
         };
     }, []);
 
-    // Função para lidar com a busca
-    const handleSearch = (e: FormEvent) => {
-      e.preventDefault();
-      // Redireciona para a página de pesquisa, passando o termo como query param
-      router.push(`/pesquisar?termo=${encodeURIComponent(termoBusca)}`);
-    };
+ 
 
     return (
         <div className="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200">

@@ -23,7 +23,7 @@ export default function CadastroPage() {
     setSuccess(null);
 
     try {
-      const res = await fetch('http://localhost:3000/users/registrar', {
+      const res = await fetch('https://api-infobus-proj-pi.onrender.com/registrar', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -45,8 +45,12 @@ export default function CadastroPage() {
         router.push('/login'); 
       }, 2000);
 
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+    setError(err.message);
+  } else {
+    setError('Ocorreu um erro desconhecido.');
+  }
     } finally {
       setIsLoading(false);
     }

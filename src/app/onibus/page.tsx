@@ -34,7 +34,7 @@ export default function PesquisarPage() {
   useEffect(() => {
     const fetchAllRoutes = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/onibus'); 
+        const response = await axios.get('https://api-infobus-proj-pi.onrender.com/onibus'); 
         setAllRoutes(response.data);
         setDisplayedRoutes(response.data);
       } catch (err) {
@@ -66,7 +66,7 @@ export default function PesquisarPage() {
     setError(null);
 
     try {
-      const response = await axios.post('http://localhost:3000/onibus/pesquisa-avancada', payload);
+      const response = await axios.post('https://api-infobus-proj-pi.onrender.com/pesquisa-avancada', payload);
       setDisplayedRoutes(response.data);
     } catch (err) {
       setError('Ocorreu um erro ao buscar. Tente novamente.');

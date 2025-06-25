@@ -1,13 +1,13 @@
 "use client";
 
-import { useState, useEffect, useCallback, FormEvent } from 'react'; // 1. Importe FormEvent
+import { useState, useEffect, useCallback, FormEvent } from 'react'; 
 import { Navbar } from '@/components/Navbar';
 import Link from 'next/link';
-import { User, Heart, Shield, Loader2, ServerCrash, Bus, Trash2, Edit, X, CheckCircle } from 'lucide-react'; // Adicionei CheckCircle para feedback
+import { User, Heart, Shield, Loader2, ServerCrash, Bus, Trash2, Edit, X, CheckCircle } from 'lucide-react'; 
 import axios from 'axios';
 import { Footer } from '@/components/Footer';
 
-// --- Tipos de Dados --- (sem alteração)
+
 interface UserProfile {
   nome: string;
   email: string;
@@ -45,20 +45,26 @@ export default function MinhaContaPage() {
     const config = { headers: { 'Authorization': `Bearer ${token}` } };
     try {
       const [profileResponse, routesResponse] = await Promise.all([
-        axios.get('http://localhost:3000/users/me', config),
-        axios.get('http://localhost:3000/users/me/rotas', config)
+        axios.get('https://api-infobus-proj-pi.onrender.com/users/me', config),
+        axios.get('https://api-infobus-proj-pi.onrender.com/users/me/rotas', config)
       ]);
       setProfile(profileResponse.data);
       setTempProfile(profileResponse.data);
       setSavedRoutes(routesResponse.data);
-    } catch (err: any) {
-      console.error(err);
-      if (err.response?.status === 401 || err.response?.status === 403) {
-        localStorage.removeItem('authToken');
-        setError("Sua sessão expirou. Por favor, faça login novamente.");
-      } else {
-        setError(err.response?.data?.message || err.message || "Ocorreu um erro ao carregar seus dados.");
-      }
+    } catch (err: unknown) {
+  console.error(err);
+  if (axios.isAxiosError(err)) {
+    if (err.response?.status === 401 || err.response?.status === 403) {
+      localStorage.removeItem('authToken');
+      setError("Sua sessão expirou. Por favor, faça login novamente.");
+    } else {
+      setError(err.response?.data?.message || "Erro ao carregar dados.");
+    }
+  } else if (err instanceof Error) {
+    setError(err.message);
+  } else {
+    setError("Ocorreu um erro desconhecido.");
+  }
     } finally {
       setIsLoading(false);
     }
@@ -74,11 +80,11 @@ export default function MinhaContaPage() {
     setSavedRoutes(prevRoutes => prevRoutes.filter(r => r.Num_Onibus !== routeNumber));
     try {
       await axios.post(
-        'http://localhost:3000/users/rotas/remover',
+        'https://api-infobus-proj-pi.onrender.com/users/rotas/remover',
         { routeNumber },
         { headers: { 'Authorization': `Bearer ${token}` } }
       );
-    } catch (err) {
+    } catch {
       alert("Erro ao remover rota. A lista será restaurada.");
       setSavedRoutes(originalRoutes);
     }
@@ -106,7 +112,7 @@ export default function MinhaContaPage() {
     const token = localStorage.getItem('authToken');
     try {
       const response = await axios.patch(
-        'http://localhost:3000/users/me/alterar-senha',
+        'https://api-infobus-proj-pi.onrender.com/me/alterar-senha',
         { senhaAtual: currentPassword, novaSenha: newPassword }, 
         { headers: { 'Authorization': `Bearer ${token}` } } 
       );
