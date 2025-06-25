@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { Home, User, Bookmark, AlertCircle, LogIn, LogOut, Map as MapIcon } from "lucide-react";
+import { Home, User, LogIn, LogOut, Map as MapIcon } from "lucide-react";
 
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);

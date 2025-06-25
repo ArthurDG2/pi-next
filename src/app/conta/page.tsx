@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, useEffect, useCallback, FormEvent } from 'react'; 
+import { useState, useEffect, useCallback, FormEvent } from 'react';
 import { Navbar } from '@/components/Navbar';
 import Link from 'next/link';
-import { User, Heart, Shield, Loader2, ServerCrash, Bus, Trash2, Edit, X, CheckCircle } from 'lucide-react'; 
+import { User, Heart, Shield, Loader2, ServerCrash, Bus, Trash2, Edit, X, CheckCircle } from 'lucide-react';
 import axios from 'axios';
 import { Footer } from '@/components/Footer';
 
@@ -52,19 +52,19 @@ export default function MinhaContaPage() {
       setTempProfile(profileResponse.data);
       setSavedRoutes(routesResponse.data);
     } catch (err: unknown) {
-  console.error(err);
-  if (axios.isAxiosError(err)) {
-    if (err.response?.status === 401 || err.response?.status === 403) {
-      localStorage.removeItem('authToken');
-      setError("Sua sessão expirou. Por favor, faça login novamente.");
-    } else {
-      setError(err.response?.data?.message || "Erro ao carregar dados.");
-    }
-  } else if (err instanceof Error) {
-    setError(err.message);
-  } else {
-    setError("Ocorreu um erro desconhecido.");
-  }
+      console.error(err);
+      if (axios.isAxiosError(err)) {
+        if (err.response?.status === 401 || err.response?.status === 403) {
+          localStorage.removeItem('authToken');
+          setError("Sua sessão expirou. Por favor, faça login novamente.");
+        } else {
+          setError(err.response?.data?.message || "Erro ao carregar dados.");
+        }
+      } else if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("Ocorreu um erro desconhecido.");
+      }
     } finally {
       setIsLoading(false);
     }
@@ -96,9 +96,9 @@ export default function MinhaContaPage() {
     setIsEditingProfile(false);
   }
 
- 
+
   const handleChangePassword = async (e: FormEvent) => {
-    e.preventDefault(); 
+    e.preventDefault();
     setIsSavingPassword(true);
     setPasswordError(null);
     setPasswordSuccess(null);
@@ -113,17 +113,23 @@ export default function MinhaContaPage() {
     try {
       const response = await axios.patch(
         'https://api-infobus-proj-pi.onrender.com/me/alterar-senha',
-        { senhaAtual: currentPassword, novaSenha: newPassword }, 
-        { headers: { 'Authorization': `Bearer ${token}` } } 
+        { senhaAtual: currentPassword, novaSenha: newPassword },
+        { headers: { 'Authorization': `Bearer ${token}` } }
       );
 
       setPasswordSuccess(response.data.message);
       setCurrentPassword('');
       setNewPassword('');
 
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error(err);
-      setPasswordError(err.response?.data?.message || "Ocorreu um erro ao alterar a senha.");
+      if (axios.isAxiosError(err)) {
+        setPasswordError(err.response?.data?.message || "Ocorreu um erro ao alterar a senha.");
+      } else if (err instanceof Error) {
+        setPasswordError(err.message);
+      } else {
+        setPasswordError("Erro desconhecido ao alterar a senha.");
+      }
     } finally {
       setIsSavingPassword(false);
     }
@@ -297,7 +303,7 @@ export default function MinhaContaPage() {
 
           )}
 
-        </section>    
+        </section>
         <section className="bg-card p-6 sm:p-8 rounded-xl border border-border shadow-sm">
           <h2 className="text-2xl font-semibold text-foreground mb-6 flex items-center gap-3"><Shield /> Segurança</h2>
           <form onSubmit={handleChangePassword} className="space-y-4 max-w-sm">

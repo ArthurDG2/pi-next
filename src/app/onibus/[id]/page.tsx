@@ -20,7 +20,7 @@ interface OnibusDetalhado {
 // Busca os dados de um ônibus específico
 async function getOnibusDetalhado(id: string): Promise<OnibusDetalhado | null> {
     try {
-        const res = await fetch(`http://localhost:3000/onibus/${id}`, { cache: 'no-store' });
+        const res = await fetch(`https://api-infobus-proj-pi.onrender.com/onibus/${id}`, { cache: 'no-store' });
         if (!res.ok) return null;
         return res.json();
     } catch (error) {
@@ -33,13 +33,13 @@ async function getOnibusDetalhado(id: string): Promise<OnibusDetalhado | null> {
 async function getAuthenticatedUser(token: string | undefined) {
     if (!token) return null;
     try {
-        const res = await fetch(`http://localhost:3000/users/me`, {
+        const res = await fetch(`https://api-infobus-proj-pi.onrender.com/users/me`, {
             headers: { 'Authorization': `Bearer ${token}` },
             cache: 'no-store',
         });
         if (!res.ok) return null;
         return res.json();
-    } catch (error) {
+    } catch{
         return null;
     }
 }

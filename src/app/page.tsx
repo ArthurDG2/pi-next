@@ -1,10 +1,9 @@
 "use client";
 
-import React, { useEffect, useState, FormEvent } from "react";
-import { useRouter } from 'next/navigation'; 
+import React, { useEffect, useState, } from "react";
 import { Navbar } from "../components/Navbar";
 import { Footer } from "../components/Footer";
-import { User, Bus, Info, Search } from "lucide-react";
+import { User, Bus, Info,} from "lucide-react";
 import dynamic from "next/dynamic";
 
 const MapOSM = dynamic(() => import("@/components/MapOSM").then((mod) => mod.MapOSM),{ ssr: false });

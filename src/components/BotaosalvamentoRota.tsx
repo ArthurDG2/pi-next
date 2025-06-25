@@ -43,8 +43,12 @@ export function BotaoSalvarRota({ routeNumber, isInitiallySaved }: BotaoSalvarRo
       // Sucesso! Inverte o estado do botão
       setIsSaved(!isSaved);
 
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError('Ocorreu um erro desconhecido.');
+      }
     } finally {
       setIsLoading(false);
     }
@@ -52,21 +56,21 @@ export function BotaoSalvarRota({ routeNumber, isInitiallySaved }: BotaoSalvarRo
 
   return (
     <div>
-        <button
-          onClick={handleClick}
-          disabled={isLoading}
-          className={`w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg font-semibold transition-all duration-300
+      <button
+        onClick={handleClick}
+        disabled={isLoading}
+        className={`w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg font-semibold transition-all duration-300
             ${isSaved
-              ? 'bg-emerald-600 text-white hover:bg-emerald-700'
-              : 'bg-primary text-primary-foreground hover:bg-blue-700'
-            }
+            ? 'bg-emerald-600 text-white hover:bg-emerald-700'
+            : 'bg-primary text-primary-foreground hover:bg-blue-700'
+          }
             disabled:bg-muted disabled:cursor-not-allowed
           `}
-        >
-          {isSaved ? <BookmarkCheck size={20} /> : <Bookmark size={20} />}
-          {isLoading ? 'Aguarde...' : (isSaved ? 'Salvo!' : 'Salvar Rota')}
-        </button>
-        {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
+      >
+        {isSaved ? <BookmarkCheck size={20} /> : <Bookmark size={20} />}
+        {isLoading ? 'Aguarde...' : (isSaved ? 'Salvo!' : 'Salvar Rota')}
+      </button>
+      {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
     </div>
   );
 }
